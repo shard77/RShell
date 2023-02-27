@@ -1,6 +1,8 @@
+mod commands;
+
 use std::io::{stdin, stdout, Write};
-use std::env;
 use std::fs;
+
 
 fn main() {
     loop {
@@ -19,17 +21,32 @@ fn main() {
         match command {
             Some("cat") => {
                 if !params_vector.is_empty() {
-                    let contents = fs::read_to_string(params_vector[0])
-                        .expect("Should have been able to read the file");
-
-                    println!("🐈‍⬛ Cat Output:\n{contents}");
+                    commands::cat(&params_vector[0]);
                 }
             },
 
+            Some("ls") => {
+                if !params_vector.is_empty() {
+                    commands::ls(&params_vector[0]);
+                } else {
+                    commands::ls(".");
+                }
+            },
+
+            Some("touch") => {
+                if !params_vector.is_empty() {
+                    commands::touch(&params_vector[0]);
+                }
+            },
+
+            Some("cd") => {
+                if !params_vector.is_empty() {
+                    commands::cd(&params_vector[0]);
+                }
+            }
+
             _ => println!("command not known")
         }
-
-
 
     }
 }
