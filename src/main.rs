@@ -4,8 +4,17 @@ use std::io::{stdin, stdout, Write};
 use std::fs;
 use std::env;
 use sysinfo::{NetworkExt, NetworksExt, ProcessExt, System, SystemExt};
+use fltk::{app, prelude::*, window::Window};
 
 fn main() {
+    let app = app::App::default();
+    let mut wind = Window::new(100, 100, 400, 300, "Hello from rust");
+    wind.end();
+    wind.show();
+    
+
+    app.run().unwrap();
+
     loop {
         print!("> ");
         stdout().flush().unwrap();
@@ -46,31 +55,19 @@ fn main() {
                 }
             }
 
-            Some("sysinfo") => {
+            Some("sys") => {
                 let mut sys = System::new_all();
                 sys.refresh_all();
-                println!("Disks:");
-                for disk in sys.disks() {
-                    println!("{:?}", disk);
-                }
-                println!("=> networks:");
-                for (interface_name, data) in sys.networks() {
-                    println!("{}: {}/{} B", interface_name, data.received(), data.transmitted());
-                }
-                println!("=> components:");
-                for component in sys.components() {
-                    println!("{:?}", component);
-                }
-                println!("=> system:");
-                println!("total memory: {} bytes", sys.total_memory());
-                println!("used memory : {} bytes", sys.used_memory());
-                println!("total swap  : {} bytes", sys.total_swap());
-                println!("used swap   : {} bytes", sys.used_swap());
-                println!("System name:             {:?}", sys.name());
-                println!("System kernel version:   {:?}", sys.kernel_version());
-                println!("System OS version:       {:?}", sys.os_version());
-                println!("System host name:        {:?}", sys.host_name());
-                println!("NB CPUs: {}", sys.cpus().len());
+
+                println!(
+                    "{0: <15} | {1: <15} | {2: <15} | {3: <15}",
+                    "System", "blanks", "comments", "code",
+                );
+
+                println!("{0} {1: <14}|", "", sys.host_name().unwrap());
+                println!("{0} {1: <14}|", "", sys.name().unwrap());
+                println!("{0} {1: <14}|", "", sys.kernel_version().unwrap());
+                println!("{0} {1} {2: <9}|", "", "UPT:", sys.uptime());
             }
 
             _ => println!("command not known")
