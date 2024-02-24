@@ -1,6 +1,6 @@
 # RShell 🦀
 
-Shell created with the awesome Rust Lang. 
+Shell created with the Rust Lang. 
 
 ## Supported Features
 - Basic commands:
